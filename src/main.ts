@@ -3,13 +3,13 @@ import { createPinia } from 'pinia';
 import { createI18n } from 'vue-i18n';
 import App from './App.vue';
 import router from './router';
-import zhLocale from './locales/zh';
+import enLocale from './locales/en';
 
 const i18n = createI18n({
   legacy: false,
-  locale: 'zh',
+  locale: 'en',
   messages: {
-    zh: zhLocale
+    en: enLocale
   }
 });
 
@@ -21,4 +21,4 @@ app.use(pinia);
 app.use(router);
 app.use(i18n);
 
-app.mount('#app'); 
+app.mount('#app');

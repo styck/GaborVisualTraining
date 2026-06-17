@@ -230,7 +230,7 @@ function formatPercent(value: number | undefined | null): string {
 }
 
 function formatDateTime(timestamp: number): string {
-  return new Date(timestamp).toLocaleString('zh-CN', {
+  return new Date(timestamp).toLocaleString('en-US', {
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',

@@ -1,22 +1,22 @@
 <template>
   <div class="training-report">
     <h2>{{ $t('report.title') }}</h2>
-    
+
     <!-- 训练记录列表 -->
     <div class="training-list">
       <div v-for="(record, index) in processedRecords" :key="record.id" class="training-item">
         <div class="training-index">#{{ processedRecords.length - index }}</div>
         <div class="training-info">
-          <div class="training-date">{{ new Date(record.startTime).toLocaleDateString('zh-CN') }}</div>
+          <div class="training-date">{{ new Date(record.startTime).toLocaleDateString('en-US') }}</div>
           <div class="training-mode">{{ record.mode }}</div>
-          <div class="training-quality">训练质量: {{ formatPercent(record.overallStats.quality) }}%</div>
+          <div class="training-quality">{{ $t('common.trainingQualityLabel') }}: {{ formatPercent(record.overallStats.quality) }}%</div>
         </div>
       </div>
     </div>
 
     <!-- 图表控制按钮 -->
     <div class="report-controls">
-      <button @click="toggleChart">{{ showChart ? '收起统计图' : '展开统计图' }}</button>
+      <button @click="toggleChart">{{ showChart ? $t('common.collapseChart') : $t('common.expandChart') }}</button>
     </div>
 
     <!-- 统计图表 -->
@@ -51,11 +51,11 @@ const processedRecords = computed(() => {
 
 // 图表数据
 const chartData = computed(() => ({
-  labels: processedRecords.value.map(record => 
-    `#${record.index} ${new Date(record.startTime).toLocaleDateString('zh-CN')}`
+  labels: processedRecords.value.map(record =>
+    `#${record.index} ${new Date(record.startTime).toLocaleDateString('en-US')}`
   ),
   datasets: [{
-    label: '训练质量 (%)',
+    label: t('common.trainingQualityLabel'),
     data: processedRecords.value.map(record => record.overallStats.quality),
     borderColor: '#4caf50',
     tension: 0.4
@@ -71,13 +71,13 @@ const chartOptions = {
       max: 100,
       title: {
         display: true,
-        text: '训练质量 (%)'
+        text: t('common.trainingQualityLabel')
       }
     },
     x: {
       title: {
         display: true,
-        text: '训练序号和日期'
+        text: t('common.trainingIndexAndDate')
       }
     }
   }

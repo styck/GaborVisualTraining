@@ -1,21 +1,18 @@
 <template>
   <header class="app-header">
     <div class="left">
-      <router-link to="/" class="home-link">Gabor训练</router-link>
+      <router-link to="/" class="home-link">{{ $t('common.gaborTraining') }}</router-link>
     </div>
-    
+
     <div class="right">
-      <router-link to="/select-mode" class="mode-link">训练模式</router-link>
-      <router-link to="/settings" class="settings-link">设置</router-link>
-      <router-link to="/report" class="report-link">报告</router-link>
+      <router-link to="/select-mode" class="mode-link">{{ $t('common.trainingMode') }}</router-link>
+      <router-link to="/settings" class="settings-link">{{ $t('nav.settings') }}</router-link>
+      <router-link to="/report" class="report-link">{{ $t('nav.report') }}</router-link>
     </div>
   </header>
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
-
-const router = useRouter();
 </script>
 
 <style scoped>
@@ -52,4 +49,4 @@ const router = useRouter();
 .home-link:hover, .settings-link:hover, .report-link:hover, .mode-link:hover {
   background: rgba(255, 255, 255, 0.1);
 }
-</style> 
+</style>

@@ -1,69 +1,69 @@
 <template>
   <div class="unit-summary">
-    <h2>单元总结</h2>
-    
+    <h2>{{ $t('training.unitSummary.title') }}</h2>
+
     <div class="progress-info">
       <div class="completed-units">
-        已完成单元：{{ currentUnit + 1 }}/{{ totalUnits }}
+        {{ $t('common.completedUnits') }}: {{ currentUnit + 1 }}/{{ totalUnits }}
       </div>
       <div v-if="hasNextUnit" class="next-unit-info">
-        下一单元训练类型：{{ $t(`training.modes.${nextUnitMode}.title`) }}
+        {{ $t('common.nextUnitType') }}: {{ $t(`training.modes.${nextUnitMode}.title`) }}
       </div>
     </div>
 
     <div class="summary-content">
       <div class="stats-grid">
         <div class="stat-item">
-          <div class="stat-label">正确率</div>
+          <div class="stat-label">{{ $t('common.accuracyLabel') }}</div>
           <div class="stat-value">{{ formatPercent(accuracy) }}%</div>
         </div>
         <div class="stat-item">
-          <div class="stat-label">稳定性</div>
+          <div class="stat-label">{{ $t('common.stabilityLabel') }}</div>
           <div class="stat-value">{{ formatPercent(stability) }}%</div>
         </div>
         <div class="stat-item">
-          <div class="stat-label">训练质量</div>
+          <div class="stat-label">{{ $t('training.unitSummary.quality') }}</div>
           <div class="stat-value">{{ formatPercent(quality) }}%</div>
         </div>
         <div class="stat-item">
-          <div class="stat-label">平均反应时间</div>
+          <div class="stat-label">{{ $t('common.avgReactionTimeLabel') }}</div>
           <div class="stat-value">{{ formatTime(averageReactionTime) }}ms</div>
         </div>
       </div>
 
       <div class="difficulty-info">
-        <h3>难度参数</h3>
+        <h3>{{ $t('common.difficultyParams') }}</h3>
         <div class="difficulty-grid">
           <div class="difficulty-item">
-            <span>视标大小</span>
+            <span>{{ $t('common.patchSize') }}</span>
             <div class="progress-bar">
               <div class="progress" :style="{ width: `${difficulty.size * 100}%` }"></div>
             </div>
             <span class="value">{{ formatPercent(difficulty.size * 100) }}%</span>
           </div>
           <div class="difficulty-item">
-            <span>对比度</span>
+            <span>{{ $t('common.contrast') }}</span>
             <div class="progress-bar">
               <div class="progress" :style="{ width: `${difficulty.contrast * 100}%` }"></div>
             </div>
             <span class="value">{{ formatPercent(difficulty.contrast * 100) }}%</span>
           </div>
           <div class="difficulty-item" v-if="difficulty.spacing !== undefined">
-            <span>间距系数</span>
+            <span>{{ $t('common.spacingFactor') }}</span>
             <div class="progress-bar">
               <div class="progress" :style="{ width: `${difficulty.spacing * 50}%` }"></div>
             </div>
             <span class="value">{{ formatPercent(difficulty.spacing * 100) }}%</span>
           </div>
           <div class="difficulty-item" v-if="difficulty.shift !== undefined">
-            <span>偏移范围</span>
+            <span>{{ $t('common.shiftRange') }}</span>
             <div class="progress-bar">
               <div class="progress" :style="{ width: `${(difficulty.shift ?? 0) / 30 * 100}%` }"></div>
             </div>
             <span class="value">{{ difficulty.shift }}px</span>
           </div>
           <div class="difficulty-item" v-if="difficulty.contrastDiff !== undefined">
-            <span>对比度差异</span>
+            <span>{{ $t('common.contrastDiff') }}</span>
             <div class="progress-bar">
               <div class="progress" :style="{ width: `${(difficulty.contrastDiff ?? 0) / 0.3 * 100}%` }"></div>
             </div>
@@ -75,20 +75,19 @@
 
     <div class="actions">
       <button v-if="hasNextUnit" class="continue-btn" @click="$emit('next-unit')">
-        继续训练
+        {{ $t('training.unitSummary.nextUnit') }}
       </button>
       <button v-else class="finish-btn" @click="$emit('finish')">
-        完成训练
+        {{ $t('training.unitSummary.finish') }}
       </button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import type { TrainingMode, TrainingDifficulty } from '@/types';
 
-const props = defineProps<{
+defineProps<{
   accuracy: number;
   stability: number;
   quality: number;
@@ -234,4 +233,4 @@ button:hover {
 .finish-btn:hover {
   background: rgba(255, 69, 58, 0.3);
 }
-</style> 
+</style>

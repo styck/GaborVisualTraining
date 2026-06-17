@@ -80,20 +80,20 @@
         <!-- 性能指标 -->
         <template v-if="settings.display.showPerformanceMetrics">
           <div class="performance-metrics">
-            <div>正确率: {{ formatPercent(currentCorrectRate) }}%</div>
-            <div>稳定性: {{ formatPercent(currentStability) }}%</div>
-            <div>平均反应时间: {{ formatTime(averageReactionTime) }}ms</div>
-            <div>闪烁间隔: {{ currentSession?.flashRate }}ms</div>
-            <div>视标大小: {{ formatPercent(currentPatchSize * 100) }}%</div>
-            <div>对比度: {{ formatPercent(currentContrast * 100) }}%</div>
+            <div>{{ $t('common.accuracyLabel') }}: {{ formatPercent(currentCorrectRate) }}%</div>
+            <div>{{ $t('common.stabilityLabel') }}: {{ formatPercent(currentStability) }}%</div>
+            <div>{{ $t('common.avgReactionTimeLabel') }}: {{ formatTime(averageReactionTime) }}ms</div>
+            <div>{{ $t('common.flashIntervalLabel') }}: {{ currentSession?.flashRate }}ms</div>
+            <div>{{ $t('common.patchSizeLabel') }}: {{ formatPercent(currentPatchSize * 100) }}%</div>
+            <div>{{ $t('common.contrastLabel') }}: {{ formatPercent(currentContrast * 100) }}%</div>
             <template v-if="currentMode === TRAINING_MODES.THREE_IMAGE">
-              <div>间距系数: {{ formatPercent(currentSpacing * 100) }}%</div>
+              <div>{{ $t('common.spacingFactorLabel') }}: {{ formatPercent(currentSpacing * 100) }}%</div>
             </template>
             <template v-if="currentMode === TRAINING_MODES.SHIFT_IMAGE">
-              <div>偏移量: {{ currentShift }}px</div>
+              <div>{{ $t('common.shiftAmountLabel') }}: {{ currentShift }}px</div>
             </template>
             <template v-if="currentMode === TRAINING_MODES.CLEAR_IMAGE">
-              <div>对比度差异: {{ formatPercent(currentContrastDiff * 100) }}%</div>
+              <div>{{ $t('common.contrastDiffLabel') }}: {{ formatPercent(currentContrastDiff * 100) }}%</div>
             </template>
           </div>
         </template>
@@ -1046,7 +1046,7 @@ const finishTraining = async () => {
 }
 
 const exitTraining = () => {
-  if (confirm('确定要退出当前训练吗？')) {
+  if (confirm(t('common.confirmExitTraining'))) {
     // 保存当前会话（如果存在）
     if (currentSession.value) {
       trainingStorage.saveCurrentSession(currentSession.value)
@@ -1124,7 +1124,7 @@ const handleMouseDown = (event: MouseEvent) => {
     return
   }
 
-  // 处理中键
+  // 处理中键 - start trial or training unit
   if (event.button === 1) {
     if (!isTraining.value) {
       console.log('Starting training unit with middle button')
@@ -1154,9 +1154,14 @@ const handleMouseDown = (event: MouseEvent) => {
     return
   }
 
-  // 检查是否有正确答案
+  // 如果没有正在显示刺激且没有正确答案，且已准备好，左键/右键可以触发开始试验
   if (currentCorrectAnswer.value === null) {
-    console.log('Mouse input blocked: no correct answer')
+    if (isReadyForStimulus.value && !isShowingStimulus.value) {
+      console.log('Starting trial with left/right click')
+      startTrial()
+    } else {
+      console.log('Mouse input blocked: no correct answer, not ready')
+    }
     return
   }
 
@@ -1448,9 +1453,7 @@ const handleModeChange = async (mode: string) => {
   // 检查是否有未完成的训练
   if (currentSession.value) {
     const shouldOverwrite = await new Promise<boolean>((resolve) => {
-      const result = confirm(
-        '当前有未完成的训练，是否切换到新的训练模式？\n切换后当前进度将被覆盖。',
-      )
+      const result = confirm(t('common.confirmSwitchModeNew'))
       resolve(result)
     })
 

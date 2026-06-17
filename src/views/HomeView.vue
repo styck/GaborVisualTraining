@@ -2,7 +2,7 @@
   <div class="home">
     <div class="content">
       <h1>{{ $t('home.title') }}</h1>
-      <h2 class="training-count">第{{ mixedTrainingCount + 1 }}次正式训练</h2>
+      <h2 class="training-count">{{ $t('common.sessionTraining') }} #{{ mixedTrainingCount + 1 }}</h2>
 
       <div class="stats" v-if="hasHistory">
         <div class="stats-container">
@@ -36,7 +36,7 @@
           :class="{ disabled: !hasCurrentSession }"
           @click="showSessionInfo"
         >
-          恢复训练
+          {{ $t('common.resumeTraining') }}
         </button>
       </div>
 
@@ -47,16 +47,16 @@
       <!-- 训练信息弹窗 -->
       <div v-if="showDialog" class="dialog-overlay" @click.self="closeDialog">
         <div class="dialog">
-          <h3>当前训练信息</h3>
+          <h3>{{ $t('common.sessionInfo') }}</h3>
           <div class="session-info">
-            <p>训练类型：{{ currentModeTitle }}</p>
-            <p>开始时间：{{ formatTime(sessionStartTime) }}</p>
-            <p>当前进度：{{ currentUnit + 1 }}/{{ totalUnits }} 单元</p>
+            <p>{{ $t('common.trainingType') }}: {{ currentModeTitle }}</p>
+            <p>{{ $t('common.startTime') }}: {{ formatTime(sessionStartTime) }}</p>
+            <p>{{ $t('common.currentProgress') }}: {{ currentUnit + 1 }}/{{ totalUnits }}</p>
           </div>
           <div class="dialog-actions">
-            <button class="continue-btn" @click="continueTraining">继续训练</button>
-            <button class="delete-btn" @click="deleteSession">删除训练</button>
-            <button class="cancel-btn" @click="closeDialog">取消</button>
+            <button class="continue-btn" @click="continueTraining">{{ $t('common.continue') }}</button>
+            <button class="delete-btn" @click="deleteSession">{{ $t('common.deleteTraining') }}</button>
+            <button class="cancel-btn" @click="closeDialog">{{ $t('common.cancel') }}</button>
           </div>
         </div>
       </div>
@@ -102,17 +102,17 @@ const currentModeTitle = computed(() => {
   const mode = trainingStore.currentSession.mode
   switch (mode) {
     case TRAINING_MODES.SINGLE_IMAGE:
-      return '单图训练'
+      return t('selectMode.modes.SINGLE_IMAGE')
     case TRAINING_MODES.THREE_IMAGE:
-      return '三图训练'
+      return t('selectMode.modes.THREE_IMAGE')
     case TRAINING_MODES.CLEAR_IMAGE:
-      return '清晰度训练'
+      return t('selectMode.modes.CLEAR_IMAGE')
     case TRAINING_MODES.SHIFT_IMAGE:
-      return '位移训练'
+      return t('selectMode.modes.SHIFT_IMAGE')
     case TRAINING_MODES.CROWDING:
-      return '拥挤训练'
+      return t('selectMode.modes.CROWDING')
     case TRAINING_MODES.MIXED:
-      return '混合训练'
+      return t('training.modes.mixed.title')
     default:
       return ''
   }
@@ -199,7 +199,7 @@ const startTraining = () => {
 
 const selectMode = () => {
   if (trainingStore.currentSession) {
-    if (!confirm('当前有未完成的训练，切换到训练模式选择将丢失当前进度。是否继续？')) {
+    if (!confirm(t('common.confirmSwitchMode'))) {
       return
     }
     trainingStore.clearCurrentSession()
@@ -223,7 +223,7 @@ const continueTraining = () => {
 }
 
 const deleteSession = () => {
-  if (confirm('确定要删除当前训练进度吗？')) {
+  if (confirm(t('common.confirmDeleteSession'))) {
     trainingStore.clearCurrentSession()
     closeDialog()
   }
@@ -231,7 +231,7 @@ const deleteSession = () => {
 
 const handleRetry = () => {
   if (trainingStore.currentSession) {
-    if (!confirm('当前有未完成的训练，重新训练将丢失当前进度。是否继续？')) {
+    if (!confirm(t('common.confirmRetryTraining'))) {
       return
     }
     trainingStore.clearCurrentSession()
@@ -254,7 +254,7 @@ const handleKeyDown = (event: KeyboardEvent) => {
 }
 
 const exitTraining = () => {
-  if (confirm('确定要退出当前训练吗？')) {
+  if (confirm(t('common.confirmExitTraining'))) {
     if (trainingStore.currentSession) {
       // 使用 localStorage 直接保存
       localStorage.setItem('current_session', JSON.stringify(trainingStore.currentSession))
@@ -279,7 +279,7 @@ function formatPercent(value: number): string {
 
 function formatTime(timestamp: number): string {
   const date = new Date(timestamp)
-  return new Intl.DateTimeFormat('zh-CN', {
+  return new Intl.DateTimeFormat('en-US', {
     year: 'numeric',
     month: 'numeric',
     day: 'numeric',
