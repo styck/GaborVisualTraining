@@ -10,10 +10,11 @@ Train your eyes using Gabor patches to improve vision, specifically for amblyopi
 ## How to Use
 
 1. Download the code.
-2. Run `npm run dev` to start the server.
-3. Visit `http://localhost:13142` in your browser.
-4. Click the "Start Training" button.
-5. Follow the prompts to complete the training.
+2. Run 'npm install' to install dependencies
+3. Run `npm run dev` to start the server.
+4. Visit `http://localhost:13142` in your browser.
+5. Click the "Start Training" button.
+6. Follow the prompts to complete the training.
 
 ## Training Modes
 
